@@ -73,8 +73,7 @@ int main()
         }
     }
 
-    // Part 1: What will your final score be?
-    int turns;
+    // Part 1: What will the final score of the best card be?
     int fewest_turns = 500;
     int winning_card_index;
     for (int i = 0; i < card_set.size(); i++)
@@ -92,6 +91,20 @@ int main()
 
     std::cout << "Winning Card's Final Score: " << winning_card.score << std::endl;
 
-    
+    // Part 2: What will the final score of the worst card be?
+    int most_turns = 0;
+    int losing_card_index;
+    for (int i = 0; i < card_set.size(); i++)
+    {
+        if (card_set[i].turns_to_bingo > most_turns)
+        {
+            most_turns = card_set[i].turns_to_bingo;
+            losing_card_index = i;
+        }
+    }
+    Card losing_card = card_set[losing_card_index];
+    // losing_card.PrintCard();
+
+    std::cout << "Losing Card's Final Score: " << losing_card.score << std::endl;
 
 }
