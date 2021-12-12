@@ -25,6 +25,25 @@ int FindMinimumMoves(std::vector<int> v)
     return min_moves;
 }
 
+int OptimizeFuel(std::vector<int> v)
+{
+    int min_fuel = 270000000;
+    int move, total_fuel;
+    int min = *std::min_element(v.begin(), v.end());
+    int max = *std::max_element(v.begin(), v.end());
+    for (int i = min; i <= max; i++)
+    {
+        total_fuel = 0;
+        for (int x : v)
+        {
+            move = std::abs(x - i);
+            total_fuel += (move * (move+1) / 2);
+        }
+        min_fuel = std::min(min_fuel, total_fuel);
+    }
+    return min_fuel;
+}
+
 int main()
 {
     std::string line, position;
@@ -50,4 +69,8 @@ int main()
     // Part 1: How much fuel must they spend to align to the optimal position?
     int minimum_moves = FindMinimumMoves(positions);
     std::cout << "The minimum amount of fuel is: " << minimum_moves << std::endl;
+
+    // Part 2: Linear fuel usage
+    int optimal_fuel = OptimizeFuel(positions);
+    std::cout << "The minimum amount of fuel is: " << optimal_fuel << std::endl;
 }
