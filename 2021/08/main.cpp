@@ -47,46 +47,51 @@ int main(int argc, char * argv[])
     if (input.is_open())
     {
         int line_num = 0;
+        std::string pattern;
+        std::vector<std::string> temp_vec;
         while (std::getline (input, line))
         {
-            lineStream << line;
-            std::string pattern;
-            std::vector<std::string> patterns_current_row, output_values_current_row;
-            bool is_pipe_found = false;
-            while (std::getline(lineStream, pattern, ' '))
+            std::size_t delim_pos = line.find('|');
+            std::stringstream pattern_ss(line.substr(0, delim_pos));
+            std::stringstream output_values_ss(line.substr(delim_pos + 2));
+
+            while (pattern_ss >> pattern)
             {
-                if (pattern.compare("|") == 0)
-                {
-                    is_pipe_found = true;
-                }
-                else if (!is_pipe_found)
-                {
-                    patterns_current_row.push_back(pattern);
-                }
-                else
-                {
-                    output_values_current_row.push_back(pattern);
-                }
+                temp_vec.push_back(pattern);
             }
-            patterns.push_back(patterns_current_row);
-            output_values.push_back(output_values_current_row);
+            patterns.push_back(temp_vec);
+            temp_vec.clear();
+
+            while (output_values_ss >> pattern)
+            {
+                temp_vec.push_back(pattern);
+            }
+            output_values.push_back(temp_vec);
+
+            temp_vec.clear();
             line_num += 1;
         }
     }
 
-    // Part 1: In the output values, how many times do digits 1, 4, 7, or 8 appear?
+    // // Part 1: In the output values, how many times do digits 1, 4, 7, or 8 appear?
+    // std::cout << "output_values.size(): " << output_values.size() << std::endl;
     // int count = 0;
     // for (int row_num = 0; row_num < output_values.size(); row_num++)
     // {
+    //     std::cout << "row_num: " << row_num << std::endl;
     //     std::vector<std::string> row = output_values[row_num];
     //     for (std::string value : row)
     //     {
+    //         std::cout << "current value: " << value;
     //         int output = IdentifyDigit(patterns[row_num], value);
     //         if (output >= 0)
     //         {
+    //             std::cout << " <= counter incremented";
     //             count += 1;
     //         }
+    //         std::cout << std::endl;
     //     }
     // }
+    // std::cout << "There are " << count << " 1s, 4s, 7s, and 8s in the output" << std::endl;
 
 }
