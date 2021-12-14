@@ -6,27 +6,44 @@
 #include <sstream>
 #include <string>
 
-// int IdentifyDigit(std::vector<std::string> pattern, std::string output_digit)
-// {
-//     int return_val = -1;
-//     switch (output_digit.size())
-//     {
-//     case 2:
-//         return_val = 1;
-//         break;
-//     case 3:
-//         return_val = 7;
-//         break;
-//     case 4:
-//         return_val = 4;
-//         break;
-//     case 7:
-//         return_val = 8;
-//     default:
-//         break;
-//     }
-//     return return_val;
-// }
+class Pattern
+{
+public:
+    std::string pattern;
+    int value;
+    
+    Pattern(std::string p)
+    {
+        std::sort(p.begin(), p.end());
+        pattern = p;
+        value = GetValue();
+    }
+private:
+    int GetValue()
+    {
+        int ret_val;
+        switch (pattern.size())
+        {
+        case 2:
+            ret_val = 1;
+            break;
+        case 3:
+            ret_val = 7;
+            break;
+        case 4:
+            ret_val = 4;
+            break;
+        case 7:
+            ret_val = 8;
+            break;
+        default:
+            ret_val = -1;
+            break;
+        }
+        return ret_val;
+    }
+};
+
 
 int main(int argc, char * argv[])
 {
@@ -38,7 +55,7 @@ int main(int argc, char * argv[])
 
     std::string line;
     std::stringstream lineStream;
-    std::vector<std::vector<std::string> > patterns;
+    std::vector<std::vector<Pattern> > patterns;
     std::vector<std::vector<std::string> > output_values;
 
     // read input
@@ -48,6 +65,7 @@ int main(int argc, char * argv[])
     {
         int line_num = 0;
         std::string pattern;
+        std::vector<Pattern> temp_pattern_vec;
         std::vector<std::string> temp_vec;
         while (std::getline (input, line))
         {
@@ -57,10 +75,11 @@ int main(int argc, char * argv[])
 
             while (pattern_ss >> pattern)
             {
-                temp_vec.push_back(pattern);
+                Pattern p = pattern;
+                temp_pattern_vec.push_back(p);
             }
-            patterns.push_back(temp_vec);
-            temp_vec.clear();
+            patterns.push_back(temp_pattern_vec);
+            temp_pattern_vec.clear();
 
             while (output_values_ss >> pattern)
             {
